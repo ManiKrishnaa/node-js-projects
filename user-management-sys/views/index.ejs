@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2> Add User </h2>
+        <form action="/adduser" method="post">
+            <input type="text" name="uid" id="uid" placeholder="enter user id">
+            <br>
+            <input type="text" name="uname" id="uname" placeholder="enter user name">
+            <br><br>
+            <button type="submit">Add</button>
+        </form>
+
+        <h2> Update User </h2>
+        <form action="/updateuser" method="post">
+            <input type="text" name="uid" id="uid" placeholder="enter user id">
+            <br>
+            <input type="text" name="uname" id="uname" placeholder="name to be updated">
+            <br><br>
+            <button type="submit">Update</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>User Id</th>
+                    <th>User Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(element => { %>
+                <tr>
+                    <td><%= element.userid %></td>
+                    <td><%= element.username %></td>
+                    <td>
+                        <form action="/deleteuser" method="post">
+                            <input type="hidden" name="userid" value="<%= element.userid %>">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
