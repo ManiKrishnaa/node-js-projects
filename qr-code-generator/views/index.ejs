@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .imgg{
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+<body>
+    <center>
+        <h2>QR generator</h2>
+        <form action="/generate" method="post">
+            <textarea name="data" id="data" cols="30" rows="10" placeholder="enter text to be converted"></textarea> <br><br>
+            <button type="submit">Generate</button>
+        </form>
+        <% if (qrCodeData) { %>
+            <img src="<%= qrCodeData %>" alt="Generated QR Code" class="imgg">
+        <% } %>
+    </center>
+</body>
+</html>
