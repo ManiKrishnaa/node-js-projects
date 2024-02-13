@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="headers">
+            <h2>Weather-Data</h2>
+        </div>
+        <div class="formdata">
+            <form action="/getdata" method="get">
+                <input type="text" name="city" id="city" placeholder="Enter city name" required>
+                <button type="submit">Get Data</button>
+            </form>
+        </div>
+        <% if(weatherdata) { %>
+            <div id="weather-container">
+                <div class="weather-details">
+                    <% if (weatherdata.weather[0].icon) { %>
+                        <img src="https://openweathermap.org/img/w/<%= weatherdata.weather[0].icon %>.png" alt="Weather Icon" style="width: 100px; height: auto;">
+                    <% } %>
+                    <div class="description">
+                        <p style="font-size: 20px; font-family: 'Book Antiqua',serif;"><strong>City : </strong> <%= weatherdata.name %></p>
+                        <p style="font-size: 20px; font-family: 'Book Antiqua',serif;"><strong>Weather : </strong> <%= weatherdata.weather[0].description %></p>
+                        <p style="font-size: 20px; font-family: 'Book Antiqua',serif;"><strong>Temperature :  </strong> <%= celsius %>°C</p>
+                        <p style="font-size: 20px; font-family: 'Book Antiqua',serif;"><strong>Humidity    : </strong> <%= weatherdata.main.humidity %>%</p>
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
+            <p style="font-size: 20px; font-family: 'Book Antiqua',serif;">No data found</p>
+        <% } %>
+    </div>
+</body>
+</html>
