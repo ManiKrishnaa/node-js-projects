@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management</title>
+    <style>
+        body {
+            font-family: 'Book Antiqua', serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-family: 'Book Antiqua', serif;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-container {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+
+        #addBookForm,
+        #updateBookForm,
+        #deleteBookForm {
+            display: none;
+        }
+
+        #response {
+            color: #007bff;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .form-container {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+            margin: auto; 
+            text-align: center; 
+        }
+
+        #showBooksDiv {
+            text-align: center; 
+        }
+
+        #booksTable {
+            margin: auto;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #booksTable {
+            margin: auto;
+            border-collapse: collapse; 
+            width: 80%;
+        }
+
+        #booksTable th, #booksTable td {
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: center; 
+        }
+
+        #booksTable th {
+            background-color: #f2f2f2; 
+        }
+
+        #booksTableBody {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Book Management</h1>
+
+    <button onclick="toggleForm('addBookForm')">Add Books</button>
+    <button onclick="toggleForm('updateBookForm')">Update Books</button>
+    <button onclick="toggleForm('deleteBookForm')">Delete Books</button>
+    <button onclick="toggleForm('showBooksDiv')">Show Books</button>
+
+    <div id="addBookForm" class="form-container">
+        <h2>Add a Book</h2>
+        <form id="addForm">
+            <input type="text" id="addTitle" name="title" placeholder="title" required>
+            <br>
+            <input type="text" id="addAuthor" name="author" placeholder="author" required>
+            <br>
+            <button type="button" onclick="addBook()">Add Book</button>
+        </form>
+        <div id="addResponse"></div>
+    </div>
+    
+    <div id="updateBookForm" class="form-container">
+        <h2>Update a Book</h2>
+        <form id="updateForm">
+            <label for="updateTitle">Title:</label>
+            <input type="text" id="updateTitle" name="title"  placeholder="title" required>
+            <br>
+            <label for="updateAuthor">Author:</label>
+            <input type="text" id="updateAuthor" name="author" placeholder="new author name" required>
+            <br>
+            <button type="button" onclick="updateBook()">Update Book</button>
+        </form>
+        <div id="updateResponse"></div>
+    </div>
+
+    <div id="deleteBookForm" class="form-container">
+        <h2>Delete a Book</h2>
+        <form id="deleteForm">
+            <label for="deleteTitle">Title:</label>
+            <input type="text" id="deleteTitle" name="title" placeholder="title" required>
+            <br>
+            <button type="button" onclick="deleteBook()">Delete Book</button>
+        </form>
+        <div id="deleteResponse"></div>
+    </div>
+
+    <div id="showBooksDiv" class="form-container">
+        <button type="button" onclick="showBooks()">Show Books</button>
+        <h2>Books List</h2>
+        <table id="booksTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody id="booksTableBody"></tbody>
+        </table>
+    </div>
+    
+
+    <script>
+        function toggleForm(formId) {
+            const forms = document.querySelectorAll('.form-container');
+            forms.forEach(form => {
+                if (form.id === formId) {
+                    form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+                } else {
+                    form.style.display = 'none';
+                }
+            });
+        }
+
+        function addBook() {
+        const addTitle = document.getElementById('addTitle');
+        const addAuthor = document.getElementById('addAuthor');
+        const addResponseDiv = document.getElementById('addResponse');
+
+        const bookData = {
+            title: addTitle.value,
+            author: addAuthor.value
+        };
+
+        fetch('/books', {
+            method: 'POST',
+            body: JSON.stringify(bookData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            addResponseDiv.textContent = `Book added successfully !`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function updateBook() {
+        const updateTitle = document.getElementById('updateTitle');
+        const updateAuthor = document.getElementById('updateAuthor');
+        const updateResponseDiv = document.getElementById('updateResponse');
+
+        const bookData = {
+            title: updateTitle.value,
+            author: updateAuthor.value
+        };
+
+        fetch('/books/update', {
+            method: 'PUT',
+            body: JSON.stringify(bookData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            updateResponseDiv.textContent = `Book updated successfully! `;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function deleteBook() {
+        const deleteTitle = document.getElementById('deleteTitle');
+        const deleteResponseDiv = document.getElementById('deleteResponse');
+
+        const bookData = {
+            title: deleteTitle.value,
+        };
+
+        fetch('/books/delete', {
+            method: 'DELETE',
+            body: JSON.stringify(bookData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            deleteResponseDiv.textContent = `Book deleted successfully !`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function showBooks() {
+    const booksTable = document.getElementById('booksTable');
+    const booksTableBody = document.getElementById('booksTableBody');
+
+    fetch('/books/show')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const books = data.books;
+            if (books && books.length > 0) {
+                booksTableBody.innerHTML = '';
+
+                books.forEach(book => {
+                    const row = document.createElement('tr');
+                    const titleCell = document.createElement('td');
+                    const authorCell = document.createElement('td');
+
+                    titleCell.textContent = book.title;
+                    authorCell.textContent = book.author;
+
+                    row.appendChild(titleCell);
+                    row.appendChild(authorCell);
+                    booksTableBody.appendChild(row);
+                });
+
+                booksTable.style.display = 'table';
+            } else {
+                booksTable.style.display = 'none';
+                alert('No books found.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error fetching books.');
+        });
+    }
+    </script>
+</body>
+</html>
