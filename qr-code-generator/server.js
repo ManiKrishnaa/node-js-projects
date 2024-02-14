@@ -1,27 +1,21 @@
-const qrcode = require('qrcode');
 const express = require('express');
-const bodyParser = require('body-parser');
+const bodyparser = require('body-parser');
 
 const app = express();
-app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine','ejs');
+app.set(bodyparser.urlencoded({extended:true}));
 
-app.get('/', function (req, res) {
-    return res.render('index', { qrCodeData: null });
-});
+app.get('/',(req,res) => {
+    res.render("index",{qrcodeurl : null});
+})
 
-app.post('/generate', function (req, res) {
-    var data = req.body.data;
-    var strdata = JSON.stringify(data);
-    qrcode.toDataURL(strdata, function (err, qrCodeDataURL) {
-        if (err) {
-            console.log("Error occurred while converting:", err);
-            return res.status(500).send("Error occurred while generating QR code");
-        }
-        return res.render('index', { qrCodeData: qrCodeDataURL });
-    });
-});
+app.get('/generate',(req,res) => {
+    const data = req.query.content;
+    const encodedText = encodeURIComponent(data);
+    const url = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodedText}`;
+    res.render("index",{qrcodeurl : url});
+})
 
-app.listen(8081, () => {
-    console.log("Server connected to port 8081");
-});
+app.listen(8081,() => {
+    console.log("server running at port 8081");
+})
