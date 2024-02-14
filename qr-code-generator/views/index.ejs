@@ -3,24 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>QR-Generator</title>
 </head>
 <style>
-    .imgg{
-        max-width: 100%;
-        height: auto;
+    .main{
+        background-color: aliceblue;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #content{
+        font-family: 'Book Antiqua',serif;
+        font-size: 16px;
     }
 </style>
 <body>
-    <center>
-        <h2>QR generator</h2>
-        <form action="/generate" method="post">
-            <textarea name="data" id="data" cols="30" rows="10" placeholder="enter text to be converted"></textarea> <br><br>
-            <button type="submit">Generate</button>
+    <div class="main">
+        <h2>Qr Code Generator </h2>
+        <form action="/generate" method="get">
+            <textarea name="content" id="content" cols="60" rows="05" placeholder="Enter Text"></textarea><br>
+            <button type="submit" id="sbt-btn">Generate</button>
         </form>
-        <% if (qrCodeData) { %>
-            <img src="<%= qrCodeData %>" alt="Generated QR Code" class="imgg">
+        <% if(qrcodeurl) { %>
+            <h2>QR Code Generated </h2>
+            <img src="<%= qrcodeurl %>" alt="qrcode">
         <% } %>
-    </center>
+    </div>
 </body>
 </html>
