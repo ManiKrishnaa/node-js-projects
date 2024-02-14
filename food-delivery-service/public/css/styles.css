@@ -1,0 +1,23 @@
+.header{
+    text-align: center;
+    font-family: 'Book Antiqua',serif;
+    font-weight: bold;
+}
+.navbar ul{
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    background-color: lightgray;
+    overflow: hidden;
+    display: flex;
+}
+.navbar a{
+    color: black;
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+    text-align: center;
+}
+.navbar a:hover{
+    background-color: gray;
+}
