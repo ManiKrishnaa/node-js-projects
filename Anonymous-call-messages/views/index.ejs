@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous Calls</title>
+</head>
+<style>
+    .container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .header{
+        font-size: 22px;
+        font-family: 'Book Antiqua', serif;
+        font-weight: bold;
+        padding-bottom: 10px;
+    }
+    input, textarea{
+        width: 300px;
+        font-size: 16px;
+        font-family: 'Book Antiqua', serif;
+        font-weight: bold;
+        border-radius: 10px;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+    .content{
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    #sbt-btn{
+        background-color: black;
+        cursor: pointer;
+        padding: 5px;
+        width: 300px;
+        font-size: 20px;
+        border-radius: 50px;
+        color: white;
+    }
+    #sbt-btn:hover{
+        background-color: white;
+        color: black;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="content">
+            <p class="header">Anonymous Calls!</p>
+            <form id="callForm" action="/accesscall" method="post">
+                <input type="text" name="phoneno_call" id="phoneno_call" placeholder="Enter Mobile Number" required><br>
+                <button type="submit" id="sbt-btn">Call</button>
+            </form>
+            <div id="responseMessage">
+                <% if (callResponse && callResponse.success) { %>
+                    <p style="color: black;">Call initiated successfully. Call SID: <%= callResponse.callSid %></p>
+                <% } else if (callResponse) { %>
+                    <p style="color: red;">Error initiating call: <%= callResponse.error %></p>
+                <% } %>
+            </div>
+        </div>
+        <div class="content">
+            <p class="header">Anonymous Messages!</p>
+            <form id="messageForm" action="/accessmessage" method="post">
+                <input type="text" name="phoneno_message" id="phoneno_message" placeholder="Enter Mobile Number" required><br>
+                <textarea name="message" id="message" rows="4" cols="30" placeholder="Enter Message" required></textarea><br>
+                <button type="submit" id="sbt-btn">Send</button>
+            </form>
+            <div id="responseMessage2">
+                <% if (messageResponse && messageResponse.success) { %>
+                    <p style="color: black;">Message sent successfully.</p>
+                <% } else if (messageResponse) { %>
+                    <p style="color: red;">Error sending message: <%= messageResponse.error %></p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
